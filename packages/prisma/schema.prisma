@@ -1,0 +1,57 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum WordSource {
+  MW
+  UD
+}
+
+model Word {
+  id      String     @id @default(cuid())
+  source  WordSource
+  word    String
+  date    DateTime   @default(now()) @db.Date
+  payload Json
+}
+
+model Guild {
+  guildId    String           @id
+  name       String
+  addedAt    DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  active     Boolean          @default(true)
+  channel    GuildChannel?
+  schedule   GuildSchedule?
+  dictionary GuildDictionary?
+}
+
+model GuildChannel {
+  guildId   String   @id
+  guild     Guild    @relation(fields: [guildId], references: [guildId], onUpdate: Cascade, onDelete: Restrict)
+  channelId String
+  addedAt   DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model GuildSchedule {
+  guildId         String   @id
+  guild           Guild    @relation(fields: [guildId], references: [guildId], onUpdate: Cascade, onDelete: Restrict)
+  scheduledAtHour Int
+  scheduledAtZone String
+  addedAt         DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+model GuildDictionary {
+  guildId    String     @id
+  guild      Guild      @relation(fields: [guildId], references: [guildId], onUpdate: Cascade, onDelete: Restrict)
+  dictionary WordSource
+  addedAt    DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}

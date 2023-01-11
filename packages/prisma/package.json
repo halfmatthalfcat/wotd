@@ -1,0 +1,11 @@
+{
+  "name": "@wotd/prisma",
+  "version": "1.0.0",
+  "description": "Prisma for WotD",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "@prisma/client": "^4.8.1",
+    "prisma": "^4.8.1"
+  }
+}
