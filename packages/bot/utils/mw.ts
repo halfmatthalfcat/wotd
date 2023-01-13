@@ -1,23 +1,26 @@
-import { MWResult } from "../services/mw";
+import { MWEntry } from "../services/mw";
 
-export const formatMwMessage = ({ meta, hwi, fl, shortdef }: MWResult) => {
-  const subrow = [
-    ...(fl ? [`_${fl}_`] : []),
-    ...(hwi?.hw ? [hwi.hw.replaceAll("*", "•")] : []),
-    ...(hwi?.prs?.[0]?.mw ? [`_${hwi?.prs?.[0]?.mw}_`] : []),
-  ].join(" | ");
-  const defs = shortdef
-    .map((def, i) => `${i + 1}. ${def}`)
-    .join("\n");
-  const link = `[link](https://merriam-webster.com/dictionary/${meta.id})`;
-  const docs = `[docs](https://wotd.halfmatthalfcat.com/)`;
+export const formatMwMessage = (word: string, results: Array<MWEntry>): string => {
+  const link = `[link](<${encodeURI(`https://merriam-webster.com/dictionary/${word}`)}>)`;
+  const docs = `[docs](<https://wotd.halfmatthalfcat.com/>)`;
 
-  return `
-**${meta.id}**
-${subrow}
+  const rows = results.map(({ pos, pronunciation, defs }) => {
+    const subrow = [
+      ...(pos ? [`_${pos}_`] : []),
+      ...(pronunciation?.hw ? [pronunciation.hw.replaceAll("*", "•").replaceAll(" ", "•")] : []),
+      ...(pronunciation?.prs?.[0]?.mw ? [`_${pronunciation.prs[0].mw}_`] : []),
+    ].join(" | ");
+    const renderedDefs = defs.map(({ def, num, context, examples }) => {
+      const fullDef: string = `${num} ${context.length ? `\`: ${context.join(", ")}\` ` : ""}${def}`;
+      const fullExamples: string = examples.map(example => `"${example}"`).join("\n");
+      return [
+        fullDef,
+        ...(fullExamples ? [fullExamples] : []),
+      ].join("\n");
+    }).join("\n\n");
 
-${defs}
+    return `${subrow}\n\n${renderedDefs}`;
+  }).join("\n---");
 
-${link} | ${docs}
-`.trim();
+  return `**${word}**\n${rows}\n\n${link} | ${docs}`;
 }

@@ -19,6 +19,13 @@ export interface UdResponse {
   list: Array<UdDefinition>;
 }
 
+const cleanStrings = (str: string) =>
+  str
+    .replaceAll(/\\r/g, "")
+    .replaceAll(/\s+/g, " ")
+    .replaceAll(/[\[\]]/g, "")
+    .trim()
+
 export const getUdWotd = async () => {
   logger.debug(`Pulling UD WotD.`);
   const possibleWotd = (await Promise.all(
@@ -28,7 +35,15 @@ export const getUdWotd = async () => {
     .then(response => response.list))
   ))
     .flat()
-    .sort(({ thumbs_up: tu1 }, { thumbs_up: tu2 }) => tu1 > tu2 ? -1 : tu2 > tu1 ? 1 : 0)
+    .filter(def => def.definition.length + def.example.length < 600)
+    .sort((
+      { thumbs_up: tu1, thumbs_down: td1 },
+      { thumbs_up: tu2, thumbs_down: td2 }
+    ) => {
+      const sum1 = tu1 + td1;
+      const sum2 = tu2 + td2;
+      return sum1 > sum2 ? -1 : sum2 > sum1 ? 1 : 0;
+    })
 
   logger.debug(`Successfully pulled ${possibleWotd.length} potential WotD candidates from UD.`);
 
@@ -55,8 +70,8 @@ export const getUdWotd = async () => {
               .slice(0, 3)
               .map(({ definition, example, ...rest }) => ({
                 ...rest,
-                example: example.replaceAll(/[\[\]]/g, "").trim(),
-                definition: definition.replaceAll(/[\[\]]/g, "").trim(),
+                example: cleanStrings(example),
+                definition: cleanStrings(definition),
               }))
           );
 

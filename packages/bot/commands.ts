@@ -12,7 +12,7 @@ import { timeZonesNames } from "@vvo/tzdb";
 import logger from "./logger";
 import { WordSource } from "@prisma/client";
 import { formatMwMessage } from "./utils/mw";
-import { MWResult } from "./services/mw";
+import { MWEntry, MWResult } from "./services/mw";
 import { formatUdMessage } from "./utils/ud";
 import { UdDefinition } from "./services/ud";
 
@@ -493,17 +493,11 @@ export const commands: Record<Command, InteractiveCommand> = {
 
             if (word && word.source === WordSource.MW) {
               await interaction.reply({
-                embeds: [{
-                  color: 0,
-                  description: formatMwMessage(word.payload as unknown as MWResult),
-                }],
+                content: formatMwMessage(word.word, word.payload as unknown as Array<MWEntry>),
               });
             } else if (word && word.source === WordSource.UD) {
               await interaction.reply({
-                embeds: [{
-                  color: 0,
-                  description: formatUdMessage(word.word, word.payload as unknown as Array<UdDefinition>),
-                }]
+                content: formatUdMessage(word.word, word.payload as unknown as Array<UdDefinition>),
               });
             } else {
               await interaction.reply({

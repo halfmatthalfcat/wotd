@@ -4,12 +4,19 @@ import cron from "node-cron";
 import config from "./config";
 import logger from "./logger";
 import { wotd } from "./jobs/wotd";
+import { send } from "./jobs/send";
 
-// cron.schedule("* * * * *", async () => {
-//   logger.info(`Starting WotD job.`);
-//   await wotd();
-//   logger.info(`Completed WotD job.`);
-// });
+cron.schedule("* * * * *", async () => {
+  logger.info(`Starting WotD job.`);
+  await wotd();
+  logger.info(`Completed WotD job.`);
+});
+
+cron.schedule("* * * * *", async () => {
+  logger.info(`Starting send job.`);
+  await send();
+  logger.info(`Completed send job.`);
+});
 
 const client = new Client({
   intents: [ GatewayIntentBits.Guilds ],
