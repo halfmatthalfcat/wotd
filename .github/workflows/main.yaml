@@ -39,7 +39,7 @@ jobs:
       - name: Version, Build and Push Containers
         uses: ./node_modules/@halfmatthalfcat/lerna-docker
         env:
-          BUILD_PREFIX: rc
+          VERSION_PREFIX: rc
           DOCKER_REGISTRY: registry.digitalocean.com
           REGISTRY_USERNAME: ${{ secrets.DO_TOKEN }}
           REGISTRY_PASSWORD: ${{ secrets.DO_TOKEN }}
