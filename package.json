@@ -10,6 +10,7 @@
     "packages/*"
   ],
   "devDependencies": {
+    "@halfmatthalfcat/lerna-docker": "^1.0.2",
     "lerna": "^5.1.8"
   }
 }

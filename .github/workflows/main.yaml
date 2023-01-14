@@ -1,0 +1,50 @@
+name: Build Main
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      - name: Set git user
+        run: |
+          git config --global user.email "mjo2089@gmail.com"
+          git config --global user.name "halfmatthalfcat"
+      - name: Setup node
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16.x'
+      - name: Set yarn cache dir
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+      - name: Cache node_modules
+        uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: |
+            ${{ steps.yarn-cache-dir-path.outputs.dir }}
+            node_modules
+            */*/node_modules
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}-
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+      - name: Install
+        run: yarn install
+        if: steps.yarn-cache.outputs.cache-hit != 'true'
+      - name: Version, Build and Push Containers
+        uses: ./node_modules/@halfmatthalfcat/lerna-docker
+        with:
+          BUILD_PREFIX: rc
+          DOCKER_REGISTRY: registry.digitalocean.com
+          REGISTRY_USERNAME: ${{ secrets.DO_TOKEN }}
+          REGISTRY_PASSWORD: ${{ secrets.DO_TOKEN }}
+          IMAGE_PREFIX: halfmatthalfcat
+          TAGGER_EMAIL: mjo2089@gmail.com
+          TAGGER_USERNAME: halfmatthalfcat
+      - name: Push Tags
+        run: git push --follow-tags
