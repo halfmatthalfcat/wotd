@@ -9,8 +9,10 @@
   "workspaces": [
     "packages/*"
   ],
-  "devDependencies": {
-    "@halfmatthalfcat/lerna-docker": "^1.0.6",
+  "dependencies": {
     "lerna": "^5.1.8"
+  },
+  "devDependencies": {
+    "@halfmatthalfcat/lerna-docker": "^1.0.6"
   }
 }
