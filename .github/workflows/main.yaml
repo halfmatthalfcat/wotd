@@ -41,10 +41,10 @@ jobs:
         env:
           VERSION_PREFIX: rc
           DOCKER_REGISTRY: registry.digitalocean.com
-          REGISTRY_USERNAME: ${{ secrets.DO_TOKEN }}
-          REGISTRY_PASSWORD: ${{ secrets.DO_TOKEN }}
-          IMAGE_PREFIX: halfmatthalfcat
-          TAGGER_EMAIL: mjo2089@gmail.com
-          TAGGER_USERNAME: halfmatthalfcat
+          DOCKER_REGISTRY_USERNAME: ${{ secrets.DO_TOKEN }}
+          DOCKER_REGISTRY_PASSWORD: ${{ secrets.DO_TOKEN }}
+          DOCKER_IMAGE_PREFIX: halfmatthalfcat
+          GIT_EMAIL: mjo2089@gmail.com
+          GIT_USERNAME: halfmatthalfcat
       - name: Push Tags
         run: git push --follow-tags
