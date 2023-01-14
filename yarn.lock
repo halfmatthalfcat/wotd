@@ -90,10 +90,10 @@
   resolved "https://registry.npmjs.org/@gar/promisify/-/promisify-1.1.3.tgz"
   integrity sha512-k2Ty1JcVojjJFwrg/ThKi2ujJ7XNLYaFGNB/bWT9wGR+oSMJHMa5w+CUq6p/pVrKeNNgA7pCqEcjSnHVoqJQFw==
 
-"@halfmatthalfcat/lerna-docker@^1.0.4":
-  version "1.0.4"
-  resolved "https://registry.yarnpkg.com/@halfmatthalfcat/lerna-docker/-/lerna-docker-1.0.4.tgz#381e5d3133e5420a831f393929dfc197d2d6f8d9"
-  integrity sha512-Ujcx5whoFmoas4SD91qHrbe+TDCtHUHzVNcf54s8nertUGZpMimTwE29EH+A4Wjjfp4MYEgOPSCeUGo76avRKQ==
+"@halfmatthalfcat/lerna-docker@^1.0.5":
+  version "1.0.5"
+  resolved "https://registry.yarnpkg.com/@halfmatthalfcat/lerna-docker/-/lerna-docker-1.0.5.tgz#ab0fc271eadde7b0afe70647e886009893b36a4f"
+  integrity sha512-5FTw9b1GpHZzgD4vJue8M3liOsdjwF5/7vqnyiRTmyx+FLzETLuPvHsOt/JN8KsyeXKx4Ig7fNueoyky48WP0w==
   dependencies:
     "@types/dockerode" "^3.3.14"
     "@types/node" "^18.11.18"
