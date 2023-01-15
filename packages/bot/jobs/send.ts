@@ -68,7 +68,7 @@ export const send = async () => {
     },
   });
 
-  guilds.filter(guild => {
+  guilds = guilds.filter(guild => {
     if (guild.channel && guild.schedule && guild.dictionary) {
       const schedule = DateTime.fromObject({
         hour: guild.schedule.scheduledAtHour,
