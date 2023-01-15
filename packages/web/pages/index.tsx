@@ -169,6 +169,18 @@ const Home = () => {
             </Stack>
             <Prism language="bash" noCopy={true}>/dictionary [dictionary]</Prism>
           </SimpleGrid>
+          <SimpleGrid
+            cols={2}
+            breakpoints={[
+              { maxWidth: "sm", cols: 1 },
+            ]}
+          >
+            <Stack spacing={0}>
+              <Title order={5}>Manually fire the WotD</Title>
+              <Text italic={true} size={12}>Tell WotD bot to post the WotD to your active channel, any time!</Text>
+            </Stack>
+            <Prism language="bash" noCopy={true}>/wotd</Prism>
+          </SimpleGrid>
         </Stack>
       </Stack>
       <Divider mt={10} mb={10} />
