@@ -119,7 +119,19 @@ const Home = () => {
               <Title order={5}>Initial Setup</Title>
               <Text italic={true} size={12}>Upon install, use <Code>/setup</Code> to activate WotD bot.</Text>
             </Stack>
-            <Prism language="bash" noCopy={true}>/setup [time] [tz] [dictionary]</Prism>
+            <Prism language="bash" noCopy={true}>/setup [channel] [time] [tz] [dictionary]</Prism>
+          </SimpleGrid>
+          <SimpleGrid
+            cols={2}
+            breakpoints={[
+              { maxWidth: "sm", cols: 1 },
+            ]}
+          >
+            <Stack spacing={0}>
+              <Title order={5}>Set channel</Title>
+              <Text italic={true} size={12}>Set the channel to fire the WotD into.</Text>
+            </Stack>
+            <Prism language="bash" noCopy={true}>/channel [channel]</Prism>
           </SimpleGrid>
           <SimpleGrid
             cols={2}

@@ -534,7 +534,7 @@ export const registerCommands = async (guildId: string): Promise<boolean> => {
   try {
     const body = Object.values(commands).map(c => c.data.toJSON());
     const data = (await rest.put(
-      Routes.applicationGuildCommands(config.CLIENT_ID, guildId),
+      Routes.applicationCommands(config.CLIENT_ID),
       { body },
     )) as Array<unknown>;
 
