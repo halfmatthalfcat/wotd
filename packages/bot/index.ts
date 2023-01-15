@@ -6,7 +6,7 @@ import logger from "./logger";
 import { wotd } from "./jobs/wotd";
 import { send } from "./jobs/send";
 
-cron.schedule("* * * * *", async () => {
+cron.schedule("0 0 * * *", async () => {
   logger.info(`Starting WotD job.`);
   await wotd();
   logger.info(`Completed WotD job.`);

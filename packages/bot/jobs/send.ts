@@ -118,5 +118,6 @@ export const send = async () => {
   if (mwContent && udContent) {
     logger.info(`Sending to ${guilds.length} guilds (${chunks.length} chunks)`);
     await batchedPromisePause(chunks, 1100);
+    logger.info(`Successfully sent chunks.`);
   }
 }
