@@ -74,7 +74,7 @@ export const send = async () => {
         hour: guild.schedule.scheduledAtHour,
         second: 0,
         millisecond: 0,
-      }).setZone(guild.schedule.scheduledAtZone).toUTC();
+      }, { zone: guild.schedule.scheduledAtZone }).toUTC();
 
       return now.equals(schedule);
     } else {
