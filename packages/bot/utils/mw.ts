@@ -35,11 +35,11 @@ export const formatMwMessage = (word: string, results: Array<MWEntry>): BaseMess
       new ButtonBuilder()
         .setLabel("link")
         .setURL(encodeURI(`https://merriam-webster.com/dictionary/${word}`))
-        .setStyle(ButtonStyle.Secondary),
+        .setStyle(ButtonStyle.Link),
       new ButtonBuilder()
         .setLabel("docs")
         .setURL("https://wotd.halfmatthalfcat.com/")
-        .setStyle(ButtonStyle.Secondary),
+        .setStyle(ButtonStyle.Link),
     );
 
   return {

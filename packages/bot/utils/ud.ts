@@ -22,11 +22,11 @@ export const formatUdMessage = (word: string, payload: Array<UdDefinition>): Bas
       new ButtonBuilder()
         .setLabel("link")
         .setURL(encodeURI(`https://urbandictionary.com/define.php?term=${word}`))
-        .setStyle(ButtonStyle.Secondary),
+        .setStyle(ButtonStyle.Link),
       new ButtonBuilder()
         .setLabel("docs")
         .setURL("https://wotd.halfmatthalfcat.com/")
-        .setStyle(ButtonStyle.Secondary),
+        .setStyle(ButtonStyle.Link),
     );
 
   return {
