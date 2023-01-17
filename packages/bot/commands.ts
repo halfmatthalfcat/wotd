@@ -4,7 +4,7 @@ import {
   ChannelType,
   ChatInputCommandInteraction,
   SlashCommandBuilder,
-  AutocompleteInteraction,
+  AutocompleteInteraction, MessagePayload,
 } from "discord.js";
 import { prisma } from "./db";
 import config from "./config";
@@ -492,13 +492,9 @@ export const commands: Record<Command, InteractiveCommand> = {
             });
 
             if (word && word.source === WordSource.MW) {
-              await interaction.reply({
-                content: formatMwMessage(word.word, word.payload as unknown as Array<MWEntry>),
-              });
+              await interaction.reply(formatMwMessage(word.word, word.payload as unknown as Array<MWEntry>));
             } else if (word && word.source === WordSource.UD) {
-              await interaction.reply({
-                content: formatUdMessage(word.word, word.payload as unknown as Array<UdDefinition>),
-              });
+              await interaction.reply(formatUdMessage(word.word, word.payload as unknown as Array<UdDefinition>));
             } else {
               await interaction.reply({
                 ephemeral: true,

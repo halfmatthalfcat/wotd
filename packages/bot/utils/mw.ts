@@ -1,9 +1,13 @@
 import { MWEntry } from "../services/mw";
+import {
+  ActionRowBuilder,
+  BaseMessageOptions,
+  ButtonBuilder,
+  ButtonStyle,
+  EmbedBuilder,
+} from "discord.js";
 
-export const formatMwMessage = (word: string, results: Array<MWEntry>): string => {
-  const link = `[link](<${encodeURI(`https://merriam-webster.com/dictionary/${word}`)}>)`;
-  const docs = `[docs](<https://wotd.halfmatthalfcat.com/>)`;
-
+export const formatMwMessage = (word: string, results: Array<MWEntry>): BaseMessageOptions => {
   const rows = results.map(({ pos, pronunciation, defs }) => {
     const subrow = [
       ...(pos ? [`_${pos}_`] : []),
@@ -22,5 +26,24 @@ export const formatMwMessage = (word: string, results: Array<MWEntry>): string =
     return `${subrow}\n\n${renderedDefs}`;
   }).join("\n---");
 
-  return `**${word}**\n${rows}\n\n${link} | ${docs}`;
+  const embed = new EmbedBuilder()
+    .setTitle(word)
+    .setDescription(rows);
+
+  const components = new ActionRowBuilder<ButtonBuilder>()
+    .addComponents(
+      new ButtonBuilder()
+        .setLabel("link")
+        .setURL(encodeURI(`https://merriam-webster.com/dictionary/${word}`))
+        .setStyle(ButtonStyle.Secondary),
+      new ButtonBuilder()
+        .setLabel("docs")
+        .setURL("https://wotd.halfmatthalfcat.com/")
+        .setStyle(ButtonStyle.Secondary),
+    );
+
+  return {
+    embeds: [embed],
+    components: [components],
+  };
 }

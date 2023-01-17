@@ -2,7 +2,7 @@
  * Run every minute to see where to send the WotD
  */
 
-import { APIEmbed, REST, Routes } from "discord.js";
+import { APIEmbed, MessageCreateOptions, MessagePayload, REST, Routes } from "discord.js";
 import { prisma } from "../db";
 import { DateTime } from "luxon";
 import { WordSource } from "@prisma/client";
@@ -22,7 +22,7 @@ export const send = async () => {
     millisecond: 0,
   });
 
-  let udContent: string | null = null;
+  let udContent: MessageCreateOptions | null = null;
   const udWotd = await prisma.word.findFirst({
     where: { source: WordSource.UD },
     orderBy: [{ date: "desc" }],
@@ -35,7 +35,7 @@ export const send = async () => {
     );
   }
 
-  let mwContent: string | null = null;
+  let mwContent: MessageCreateOptions | null = null;
   const mwWotd = await prisma.word.findFirst({
     where: { source: WordSource.MW },
     orderBy: [{ date: "desc" }],
@@ -84,11 +84,9 @@ export const send = async () => {
 
   const chunks = guilds.reduce((acc, curr) => {
     if (curr.dictionary) {
-      const body = JSON.stringify({
-        content: curr.dictionary.dictionary === WordSource.MW
-          ? mwContent
-          : udContent
-      })
+      const body = JSON.stringify(curr.dictionary.dictionary === WordSource.MW
+        ? mwContent
+        : udContent);
       if (acc[acc.length - 1].length === 40) {
         acc.push([
           () => rest.post(
