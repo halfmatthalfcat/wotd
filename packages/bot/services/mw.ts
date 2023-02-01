@@ -138,8 +138,9 @@ const mwToMd = (text: string): string => {
       .split(" ")
       // there could be multi-word tokens in links, so need to account for those
       .reduce((acc, curr, i, arr) => {
-        const inBracket = arr[i - 1]?.startsWith("{");
-        if (inBracket || curr.endsWith("}")) {
+        const whole = curr.startsWith("{") && curr.endsWith("}");
+        const inBracket = arr[i - 1]?.startsWith("{") && !arr[i - 1]?.endsWith("}");
+        if ((inBracket || curr.endsWith("}")) && !whole) {
           return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + " " + curr];
         } else {
           return [...acc, curr];
