@@ -24,7 +24,7 @@ export const formatMwMessage = (word: string, results: Array<MWEntry>): BaseMess
     }).join("\n\n");
 
     return `${subrow}\n\n${renderedDefs}`;
-  }).join("\n---");
+  }).join("\n\n");
 
   const embed = new EmbedBuilder()
     .setTitle(word)

@@ -2,7 +2,10 @@
  * MW Service
  */
 
-import fetch from "node-fetch";
+import nf from "node-fetch";
+import frt from "fetch-retry";
+const fetch = frt(nf as any);
+import ua from "random-useragent";
 import config from "../config";
 import logger from "../logger";
 import { prisma } from "../db";
@@ -187,9 +190,33 @@ const mwToMwEntries = (response: Array<MWResult>): Array<MWEntry> =>
     };
   });
 
-export const getMwWotd = async () => {
+export const getMwWotd = async (): Promise<string | null> => {
   logger.debug(`Pulling MW WotD.`);
-  const response = await fetch("https://www.merriam-webster.com/word-of-the-day");
+  const response = await fetch(
+    "https://www.merriam-webster.com/word-of-the-day", {
+      headers: {
+        "Accept-Encoding": "gzip",
+        "user-agent": ua.getRandom(),
+      },
+      retries: Number.MAX_SAFE_INTEGER,
+      retryDelay: (attempt, error, response) => {
+        logger.warn(`Got ${error?.name ?? response?.status ?? "unknown"} from MW getting wotd, retrying.`);
+        return 1000 + Math.random() * 3000;
+      },
+      retryOn: async (attempt, error, response) => {
+        if (response && ![400, 500, 503].includes(response.status)) {
+          const body = await response.text();
+          const $ = load(body);
+          const wotd = $(".word-and-pronunciation h1").text();
+
+          return !wotd;
+        } else if ([400, 500, 503].includes(response?.status ?? 200) || error !== null) {
+          return true;
+        }
+        return false;
+      }
+    }
+  );
   if (response.ok) {
     const body = await response.text();
     const $ = load(body);
@@ -207,7 +234,14 @@ export const getMwWotd = async () => {
 export const getMwWord = async (word: string) => {
   logger.debug(`Pulling ${word} from MW.`);
   const response = await fetch(
-    `https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${config.MW_KEY}`
+    `https://dictionaryapi.com/api/v3/references/collegiate/json/${word}?key=${config.MW_KEY}`, {
+      retryOn: [400, 500, 503],
+      retries: Number.MAX_SAFE_INTEGER,
+      retryDelay: (attempt, error, response) => {
+        logger.warn(`Got ${error?.name ?? response?.status ?? "unknown"} from MW getting wotd details, retrying.`);
+        return 1000 + Math.random() * 3000;
+      },
+    }
   );
 
   if (response.ok) {
