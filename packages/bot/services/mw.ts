@@ -134,18 +134,29 @@ const mwToMd = (text: string): string => {
   }, text);
 
   text = groupMdReplacements.reduce((acc, [regex, matchFn]) =>
-    acc.split(" ").map(word => {
-      const valid = regex.exec(word);
-      if (valid) {
-        return word.replaceAll(regex, (...args) => {
-          const groups: Record<string, string> = args[args.length - 1];
-          return matchFn(groups);
-        });
-      } else {
-        return word;
-      }
-    }).join(" ").trim()
-  , text);
+    acc
+      .split(" ")
+      // there could be multi-word tokens in links, so need to account for those
+      .reduce((acc, curr, i, arr) => {
+        const inBracket = arr[i - 1]?.startsWith("{");
+        if (inBracket || curr.endsWith("}")) {
+          return [...acc.slice(0, acc.length - 1), acc[acc.length - 1] + " " + curr];
+        } else {
+          return [...acc, curr];
+        }
+      }, [] as Array<string>)
+      .map(word => {
+        const valid = regex.exec(word);
+        if (valid) {
+          return word.replaceAll(regex, (...args) => {
+            const groups: Record<string, string> = args[args.length - 1];
+            return matchFn(groups);
+          });
+        } else {
+          return word;
+        }
+      }).join(" ").trim()
+    , text);
 
   return text;
 };
