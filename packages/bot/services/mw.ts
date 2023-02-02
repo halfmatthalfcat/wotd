@@ -204,38 +204,41 @@ const mwToMwEntries = (response: Array<MWResult>): Array<MWEntry> =>
 
 export const getMwWotd = async (): Promise<string | null> => {
   logger.debug(`Pulling MW WotD.`);
+  // Have to set wotd here because node-fetch is buggy when cloning reponses
+  // We read the body in retryOn and subsequent reads (even when the response is cloned) hang
+  let wotd: string | undefined;
   const response = await fetch(
     "https://www.merriam-webster.com/word-of-the-day", {
       headers: {
-        "Accept-Encoding": "gzip",
         "user-agent": ua.getRandom(),
       },
       retries: Number.MAX_SAFE_INTEGER,
       retryDelay: (attempt, error, response) => {
         logger.warn(`Got ${error?.name ?? response?.status ?? "unknown"} from MW getting wotd, retrying.`);
-        return 1000 + Math.random() * 3000;
+        return 1000 + (Math.random() * 3000);
       },
       retryOn: async (attempt, error, response) => {
         if (response && ![400, 500, 503].includes(response.status)) {
           const body = await response.text();
           const $ = load(body);
-          const wotd = $(".word-and-pronunciation h1").text();
-
-          return !wotd;
+          const localWotd = $(".word-and-pronunciation h1").text();
+          if (localWotd) {
+            wotd = localWotd;
+            return false;
+          } else {
+            return true;
+          }
         } else if ([400, 500, 503].includes(response?.status ?? 200) || error !== null) {
+          logger.warn(`Retrying call to MW: ${error?.message ?? response?.status ?? "unknown"}`);
           return true;
         }
         return false;
       }
     }
   );
-  if (response.ok) {
-    const body = await response.text();
-    const $ = load(body);
-    const wotd = $(".word-and-pronunciation h1").text();
 
+  if (wotd) {
     logger.debug(`Successfully pulled MW: ${wotd}`);
-
     return wotd;
   } else {
     logger.warn(`Failed to pull MW: ${response.status}`);
