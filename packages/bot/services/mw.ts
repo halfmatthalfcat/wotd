@@ -175,32 +175,34 @@ export interface MWEntry {
   defs: Array<MWEntryDef>;
 }
 const mwToMwEntries = (response: Array<MWResult>): Array<MWEntry> =>
-  response.map(({ meta, hwi, fl , def }) => {
-    const defs = def.flatMap(mwdef => mwdef.sseq.flatMap((sseq, i, arr) => sseq.flatMap(
-      ([, { dt, sls }], i2, arr2) => {
-        const def = dt.find(([ tpe ]) => tpe === "text");
-        if (!def) {
-          return [];
-        } else {
-          let [, text ] = def as TextSense;
-          text = mwToMd(text);
-          const examples = (dt
-            .filter(([ tpe ]) => tpe === "vis") as Array<VisSense>)
-            .flatMap(([, exs ]) => exs.map(({ t }) => mwToMd(t)));
-          return [{
-            num: arr2.length > 1 ? `${i + 1}${String.fromCharCode(97 + i2)}` : `${i + 1}`,
-            def: text,
-            examples,
-            context: sls ?? [],
-          } as MWEntryDef];
-        }
-    })));
-    return {
-      pronunciation: hwi,
-      pos: fl,
-      defs,
-    };
-  });
+  response
+    .filter(({ hwi, fl, def }) => hwi && fl && def)
+    .map(({ meta, hwi, fl , def }) => {
+      const defs = def.flatMap(mwdef => mwdef.sseq.flatMap((sseq, i, arr) => sseq.flatMap(
+        ([, { dt, sls }], i2, arr2) => {
+          const def = dt.find(([ tpe ]) => tpe === "text");
+          if (!def) {
+            return [];
+          } else {
+            let [, text ] = def as TextSense;
+            text = mwToMd(text);
+            const examples = (dt
+              .filter(([ tpe ]) => tpe === "vis") as Array<VisSense>)
+              .flatMap(([, exs ]) => exs.map(({ t }) => mwToMd(t)));
+            return [{
+              num: arr2.length > 1 ? `${i + 1}${String.fromCharCode(97 + i2)}` : `${i + 1}`,
+              def: text,
+              examples,
+              context: sls ?? [],
+            } as MWEntryDef];
+          }
+      })));
+      return {
+        pronunciation: hwi,
+        pos: fl,
+        defs,
+      };
+    });
 
 export const getMwWotd = async (): Promise<string | null> => {
   logger.debug(`Pulling MW WotD.`);
