@@ -180,7 +180,7 @@ const mwToMwEntries = (response: Array<MWResult>): Array<MWEntry> =>
     .map(({ meta, hwi, fl , def }) => {
       const defs = def.flatMap(mwdef => mwdef.sseq.flatMap((sseq, i, arr) => sseq.flatMap(
         ([, { dt, sls }], i2, arr2) => {
-          const def = dt.find(([ tpe ]) => tpe === "text");
+          const def = dt?.find(([ tpe ]) => tpe === "text");
           if (!def) {
             return [];
           } else {
