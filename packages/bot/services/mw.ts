@@ -215,19 +215,34 @@ export const getMwWotd = async (): Promise<string | null> => {
         "user-agent": ua.getRandom(),
       },
       retries: Number.MAX_SAFE_INTEGER,
-      retryDelay: (attempt, error, response) => {
-        logger.warn(`Got ${error?.name ?? response?.status ?? "unknown"} from MW getting wotd, retrying.`);
-        return 1000 + (Math.random() * 3000);
-      },
+      retryDelay: 60000,
       retryOn: async (attempt, error, response) => {
         if (response && ![400, 500, 503].includes(response.status)) {
           const body = await response.text();
           const $ = load(body);
-          const localWotd = $(".word-and-pronunciation h1").text();
+          const localWotd = (
+            $(".word-and-pronunciation h1").text() ||
+            $(".word-and-pronunciation h2").text() ||
+            $(".word-and-pronunciation h3").text()
+          );
+
           if (localWotd) {
+            const exists = await prisma.word.findFirst({
+              where: {
+                source: WordSource.MW,
+                word: localWotd
+              }
+            });
+
+            if (exists) {
+              logger.warn(`Got existing word ${localWotd} from MW getting wotd, retrying.`);
+              return true;
+            }
+
             wotd = localWotd;
             return false;
           } else {
+            logger.warn(`Couldn't find wotd from MW, retrying.`);
             return true;
           }
         } else if ([400, 500, 503].includes(response?.status ?? 200) || error !== null) {
