@@ -63,7 +63,7 @@ const TermsPage: NextPage = () => (
             <p><strong>Terms and Conditions</strong> (also referred as &quot;Terms&quot;) mean these Terms and Conditions
               that form the entire agreement between You and the Company regarding the use of the Service. This Terms and
               Conditions agreement has been created with the help of the <a
-                href="https://www.termsfeed.com/terms-conditions-generator/" target="_blank">TermsFeed Terms and
+                href="https://www.termsfeed.com/terms-conditions-generator/" target="_blank" rel="noreferrer">TermsFeed Terms and
                 Conditions Generator</a>.</p>
           </li>
           <li>
@@ -73,7 +73,7 @@ const TermsPage: NextPage = () => (
           </li>
           <li>
             <p><strong>Website</strong> refers to Discord Word of the Day Bot, accessible from <a
-              href="https://wotd.halfmatthalfcat.com" rel="external nofollow noopener"
+              href="https://wotd.halfmatthalfcat.com" rel="external nofollow noreferrer"
               target="_blank">https://wotd.halfmatthalfcat.com</a></p>
           </li>
           <li>
@@ -114,7 +114,7 @@ const TermsPage: NextPage = () => (
         <h1>Limitation of Liability</h1>
         <p>Notwithstanding any damages that You might incur, the entire liability of the Company and any of its suppliers
           under any provision of this Terms and Your exclusive remedy for all of the foregoing shall be limited to the
-          amount actually paid by You through the Service or 100 USD if You haven't purchased anything through the
+          amount actually paid by You through the Service or 100 USD if You haven&apos;t purchased anything through the
           Service.</p>
         <p>To the maximum extent permitted by applicable law, in no event shall the Company or its suppliers be liable for
           any special, incidental, indirect, or consequential damages whatsoever (including, but not limited to, damages
@@ -125,7 +125,7 @@ const TermsPage: NextPage = () => (
           fails of its essential purpose.</p>
         <p>Some states do not allow the exclusion of implied warranties or limitation of liability for incidental or
           consequential damages, which means that some of the above limitations may not apply. In these states, each
-          party's liability will be limited to the greatest extent permitted by law.</p>
+          party&apos;s liability will be limited to the greatest extent permitted by law.</p>
         <h1>&quot;AS IS&quot; and &quot;AS AVAILABLE&quot; Disclaimer</h1>
         <p>The Service is provided to You &quot;AS IS&quot; and &quot;AS AVAILABLE&quot; and with all faults and defects
           without warranty of any kind. To the maximum extent permitted under applicable law, the Company, on its own
@@ -138,7 +138,7 @@ const TermsPage: NextPage = () => (
           compatible or work with any other software, applications, systems or services, operate without interruption,
           meet any performance or reliability standards or be error free or that any errors or defects can or will be
           corrected.</p>
-        <p>Without limiting the foregoing, neither the Company nor any of the company's provider makes any representation
+        <p>Without limiting the foregoing, neither the Company nor any of the company&apos;s provider makes any representation
           or warranty of any kind, express or implied: (i) as to the operation or availability of the Service, or the
           information, content, and materials or products included thereon; (ii) that the Service will be uninterrupted or
           error-free; (iii) as to the accuracy, reliability, or currency of any information or content provided through
@@ -170,14 +170,14 @@ const TermsPage: NextPage = () => (
           and the remaining provisions will continue in full force and effect.</p>
         <h2>Waiver</h2>
         <p>Except as provided herein, the failure to exercise a right or to require performance of an obligation under
-          these Terms shall not effect a party's ability to exercise such right or require such performance at any time
+          these Terms shall not effect a party&apos;s ability to exercise such right or require such performance at any time
           thereafter nor shall the waiver of a breach constitute a waiver of any subsequent breach.</p>
         <h1>Translation Interpretation</h1>
         <p>These Terms and Conditions may have been translated if We have made them available to You on our Service.
           You agree that the original English text shall prevail in the case of a dispute.</p>
         <h1>Changes to These Terms and Conditions</h1>
         <p>We reserve the right, at Our sole discretion, to modify or replace these Terms at any time. If a revision is
-          material We will make reasonable efforts to provide at least 30 days' notice prior to any new terms taking
+          material We will make reasonable efforts to provide at least 30 days&apos; notice prior to any new terms taking
           effect. What constitutes a material change will be determined at Our sole discretion.</p>
         <p>By continuing to access or use Our Service after those revisions become effective, You agree to be bound by the
           revised terms. If You do not agree to the new terms, in whole or in part, please stop using the website and the
