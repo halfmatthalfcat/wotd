@@ -185,7 +185,13 @@ const Home = () => {
       </Stack>
       <Divider mt={10} mb={10} />
       <Center>
-        <Text>Created by <Link href="https://halfmatthalfcat.com" className={classes.link}>halfmatthalfcat</Link></Text>
+        <Group>
+          <Text>Created by <Link href="https://halfmatthalfcat.com" className={classes.link}>halfmatthalfcat</Link></Text>
+          <Text>|</Text>
+          <Link href='/terms' className={classes.link}>Terms</Link>
+          <Text>|</Text>
+          <Link href='/privacy' className={classes.link}>Privacy</Link>
+        </Group>
       </Center>
     </Container>
   )
